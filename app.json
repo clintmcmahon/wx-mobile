@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "wx-mobile",
+    "slug": "wx-mobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
