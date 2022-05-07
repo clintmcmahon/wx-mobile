@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const saveLocation = async (value) => {
+export const setLocation = async (value) => {
     try {
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem('location', jsonValue)
@@ -13,6 +13,6 @@ export const getLocation = async () => {
         const jsonValue = await AsyncStorage.getItem('location')
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
-        // error reading value
+      console.log('error')
     }
 }

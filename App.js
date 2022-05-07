@@ -7,9 +7,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Provider } from 'react-redux';
-import configureStore from './src/store/configureStore';
+import store from './src/store/store';
 
-const store = configureStore()
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -28,8 +27,6 @@ export default function App() {
               } else if (route.name === 'Settings') {
                 iconName = 'list';
               }
-
-              // You can return any component that you like here!
               return <Ionicons name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: 'tomato',
