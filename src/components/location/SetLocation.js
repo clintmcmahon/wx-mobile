@@ -7,19 +7,29 @@ import { Picker } from '@react-native-picker/picker';
 import * as locationService from "../../services/LocationService";
 
 function SetLocation() {
-    const [selectedState, setSelectedState] = useState(stationData[0]);
-    const [selectedStateStations, setSelectedStateStations] = useState(stationData[0].stations);
+    const [selectedState, setSelectedState] = useState(null);
+    const [selectedStateStations, setSelectedStateStations] = useState(stationData[0].stations.filter((station) => station.name.toLowerCase().endsWith("area")));
     const [selectedStation, setSelectedStation] = useState(stationData[0].stations[0]);
     const state = useSelector(state => state);
     const dispatch = useDispatch();
 
-    const setState = (stateShortCode) =>{
+    useEffect(()=>{
+        console.log("set location " + JSON.stringify(state.location))
+        if(state.location)
+        {
+            setSelectedState(state.location.state);
+        }
+      
+    })
+
+    const setState = (stateShortCode) => {
         const selectedState = stationData.find(state => state.shortCode === stateShortCode);
+        const areaStations = selectedState.stations.filter((station) => station.name.toLowerCase().endsWith("area"));
         setSelectedState(stateShortCode);
-        setSelectedStateStations(selectedState.stations);
+        setSelectedStateStations(areaStations);
     }
 
-    const setStation = (station) =>{
+    const setStation = (station) => {
         setSelectedStation(station);
         setLocation({
             state: selectedState,
@@ -29,6 +39,7 @@ function SetLocation() {
 
     const setLocation = (location) => {
         dispatch(changeLocation(location));
+        locationService.setLocation(location);
     }
 
     return (
@@ -55,9 +66,10 @@ function SetLocation() {
                     <Text>Set your station</Text>
                 </View>
                 <Picker
+                    
                     selectedValue={selectedStation}
                     onValueChange={(station, itemIndex) =>
-setStation(station)                    }>
+                        setStation(station)}>
                     {selectedStateStations.map((station) => {
                         return (
                             <Picker.Item key={station.name} label={station.name} value={station.name} />

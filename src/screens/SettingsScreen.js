@@ -1,12 +1,14 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
 import SetLocation from "../components/location/SetLocation";
+import Screen from "./Screen";
+
 function SettingsScreen() {
     return (
-      <View style={{ flex: 1 }}>
+      <Screen>
         <Text>Set Location</Text>
         <SetLocation />
-      </View>
+      </Screen>
     );
   }
 

@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import * as locationService from '../services/LocationService';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTheme } from "@react-navigation/native";
 
+import RecordHigh from './records/RecordHigh';
 function Home() {
     const state = useSelector(state => state);
+    const theme = useTheme();
 
     if (state.location) {
         return (
-            <View>
-                <Text>{state.location.station}</Text>
-            </View>
+            <ScrollView>
+                <View>
+                    <Text style={{ fontSize: theme.h1Size }}>{state.location.station}</Text>
+                </View>
+                <View>
+                    <RecordHigh temp={null} />
+                </View>
+            </ScrollView>
+
         )
     }
     else {
