@@ -1,14 +1,14 @@
 import React from "react";
-import {View, Text} from "react-native";
+import { View, Text } from "react-native";
 
-function RecordHigh({temp}){
-    return(
-        <View>
-            <Text>
-                {temp}
-            </Text>
-        </View>
-    )
+function RecordHigh({ temp, date }) {
+  return (
+    <View>
+      <Text>
+        {temp} - {date.getFullYear()}
+      </Text>
+    </View>
+  );
 }
 
 export default RecordHigh;

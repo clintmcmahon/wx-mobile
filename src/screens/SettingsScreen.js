@@ -1,15 +1,13 @@
-import React from 'react';
-import {Text} from 'react-native';
+import React from "react";
 import SetLocation from "../components/location/SetLocation";
 import Screen from "./Screen";
 
 function SettingsScreen() {
-    return (
-      <Screen>
-        <Text>Set Location</Text>
-        <SetLocation />
-      </Screen>
-    );
-  }
+  return (
+    <Screen>
+      <SetLocation />
+    </Screen>
+  );
+}
 
-  export default SettingsScreen;
+export default SettingsScreen;
