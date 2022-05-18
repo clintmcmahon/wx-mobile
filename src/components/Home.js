@@ -3,13 +3,16 @@ import { View, Text, ScrollView } from "react-native";
 import * as locationService from "../services/LocationService";
 import { useSelector, useDispatch } from "react-redux";
 import { useTheme } from "@react-navigation/native";
-
-import RecordHigh from "./records/RecordHigh";
-import * as weatherDataService from "../services/weatherDataService";
+import * as weatherDataService from "../services/WeatherDataService";
+import RecordCard from "./records/RecordCard";
+import RecordChart from "./records/RecordChart";
 
 function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [dateName, setDateName] = useState()
   const [records, setRecords] = useState(null);
+  const [normals, setNormals] = useState(null);
+  const [recordHighsAndLows, setRecordHighsAndLows] = useState(null);
   const state = useSelector((state) => state);
   const theme = useTheme();
 
@@ -24,8 +27,9 @@ function Home() {
       const year = selectedDate.getFullYear();
       const shortDate = month + "-" + day;
       const longDate = year + "-" + month + "-" + day;
-      const dateName =
-        selectedDate.toLocaleString("en-US", { month: "long" }) + " " + day;
+      
+      setDateName(
+        selectedDate.toLocaleString("en-US", { month: "long" }) + " " + day);
 
       setRecords(
         await weatherDataService.getRecords(
@@ -34,33 +38,79 @@ function Home() {
           shortDate
         )
       );
+
+      setNormals(
+        await weatherDataService.getNormals(
+          selectedStation.sids[0],
+          longDate,
+          longDate
+        )
+      );
+
+      setRecordHighsAndLows(
+        await weatherDataService.getRecordHighsAndLows(selectedStation.sids[0], shortDate)
+      );
     };
 
     if (state.location) {
       getRecords();
     }
-  });
+  }, [state.location]);
 
-  if (records) {
     return (
       <ScrollView>
         <View>
-          <Text style={{ fontSize: theme.h1Size }}>
+          <Text style={{ fontSize: 20 }}>
             {state.location.station}
           </Text>
+          <Text style={{fontSize: 18, color:theme.colors.dark, paddingTop: 5}}>{dateName}</Text>
         </View>
-        <View>
-          <RecordHigh temp={records.highTemp} date={records.highDate} />
+        <View style={{ paddingTop: 20 }}>
+          <RecordCard
+            title="Record High"
+            temp={records ? records.highTemp : null}
+            date={records ? records.highDate : null}
+            hotCold="hot"
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <RecordCard
+            title="Normal High"
+            temp={normals ? normals.high : null}
+            hotCold="hot"
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <RecordChart
+            title="Record Highs"
+            data={recordHighsAndLows ? recordHighsAndLows.highs : null}
+            hotCold="hot"
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <RecordCard
+            title="Record Low"
+            temp={records ? records.lowTemp : null}
+            date={records ? records.lowDate : null}
+            hotCold="cold"
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <RecordCard
+            title="Normal Low"
+            temp={normals ? normals.low : null}
+            hotCold="cold"
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <RecordChart
+            title="Record Lows"
+            data={recordHighsAndLows ? recordHighsAndLows.lows : null}
+            hotCold="cold"
+          />
         </View>
       </ScrollView>
     );
-  } else {
-    return (
-      <View>
-        <Text>You need to set a location</Text>
-      </View>
-    );
-  }
 }
 
 export default Home;

@@ -2,12 +2,12 @@ import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 
 export const WxLightTheme = {
   ...DefaultTheme,
-  h1Size: 28,
-  h1FontWeight: "regular",
-  h2Size: 22,
-  h3Size: 20,
   colors: {
     ...DefaultTheme.colors,
+    cardBackgroundColor: "#ffffff",
+    heat: "#e74a3b",
+    cold: "#4e73df",
+    dark: "#5a5c69"
   },
 };
 

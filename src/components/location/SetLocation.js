@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Button } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { changeLocation } from "../../actions/locations";
 import stationData from "../../data/stationData.json";
@@ -7,7 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import * as locationService from "../../services/LocationService";
 import { useTheme } from "@react-navigation/native";
 
-function SetLocation() {
+function SetLocation({navigation}) {
   const theme = useTheme();
   const [selectedState, setSelectedState] = useState(null);
   const [selectedStateStations, setSelectedStateStations] = useState([]);
@@ -56,16 +56,22 @@ function SetLocation() {
 
     dispatch(changeLocation(location));
     locationService.setLocation(location);
+    navigation.navigate("Home");
   };
 
   return (
-    <View>
-      <Text style={{ fontSize: theme.h2Size }}>Set your location</Text>
-      <View style={{ paddingTop: 15 }}>
+    <ScrollView>
+      <Text style={{ fontSize: 18 }}>Set your location</Text>
+      <View
+        style={{
+          backgroundColor: theme.colors.cardBackgroundColor,
+          padding: 10,
+          marginTop: 10,
+          borderRadius: 5
+        }}>
         <View>
-          <Text style={{ fontWeight: "bold" }}>State:</Text>
+          <Text style={{ fontWeight: "bold"}}>1. Choose State</Text>
         </View>
-
         <Picker
           selectedValue={selectedState}
           onValueChange={(state, itemIndex) => setState(state)}
@@ -81,9 +87,15 @@ function SetLocation() {
           })}
         </Picker>
       </View>
-      <View>
+      <View
+        style={{
+          backgroundColor: theme.colors.cardBackgroundColor,
+          padding: 10,
+          marginTop: 10,
+          borderRadius: 5
+        }}>
         <View>
-          <Text style={{ fontWeight: "bold" }}>Station</Text>
+          <Text style={{ fontWeight: "bold" }}>2. Select Station</Text>
         </View>
         {selectedStation && selectedStateStations && (
           <Picker
@@ -116,7 +128,7 @@ function SetLocation() {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

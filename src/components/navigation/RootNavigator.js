@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import HomeScreen from '../../screens/HomeScreen';
 import SettingsScreen from '../../screens/SettingsScreen';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -26,6 +27,14 @@ function RootNavigator() {
         }
     }, [])
 
+    if (!state.location) {
+        return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator />
+            </View>
+        )
+    }
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -50,5 +59,17 @@ function RootNavigator() {
         </Tab.Navigator>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+    }
+});
 
 export default RootNavigator;
