@@ -313,7 +313,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.wxmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msoftware.wxmobile;
 				PRODUCT_NAME = wxmobile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -336,7 +336,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.wxmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msoftware.wxmobile;
 				PRODUCT_NAME = wxmobile;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

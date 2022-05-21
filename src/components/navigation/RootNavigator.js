@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import HomeScreen from '../../screens/HomeScreen';
 import SettingsScreen from '../../screens/SettingsScreen';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as locationService from "../../services/LocationService";
 import { useSelector, useDispatch } from 'react-redux';
@@ -40,17 +40,16 @@ function RootNavigator() {
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
-
+                    let iconColor = focused ? 'black' : 'gray';
                     if (route.name === 'Home') {
-                        iconName = focused
-                            ? 'information-circle'
-                            : 'information-circle-outline';
+                        iconName= 'temperature-high';
+                        
                     } else if (route.name === 'Settings') {
                         iconName = 'list';
                     }
-                    return <Ionicons name={iconName} size={size} color={color} />;
+                    return <FontAwesome5 name={iconName} size={24} color={iconColor}/>;
                 },
-                tabBarActiveTintColor: 'tomato',
+                tabBarActiveTintColor: 'black',
                 tabBarInactiveTintColor: 'gray',
             })}
         >
