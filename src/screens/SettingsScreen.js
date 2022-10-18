@@ -1,11 +1,14 @@
 import React from "react";
+import { View } from "react-native";
 import SetLocation from "../components/location/SetLocation";
 import Screen from "./Screen";
 
-function SettingsScreen({navigation}) {
+function SettingsScreen({ navigation }) {
   return (
     <Screen>
-      <SetLocation navigation={navigation}/>
+      <View style={{ padding: 10 }}>
+        <SetLocation navigation={navigation} />
+      </View>
     </Screen>
   );
 }

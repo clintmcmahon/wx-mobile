@@ -1,22 +1,14 @@
-import React from 'react';
-import { SafeAreaView, View } from 'react-native';
+import React from "react";
+import { SafeAreaView, View } from "react-native";
 
 export const Screen = (props) => {
-    const { children } = props;
-    const containerStyle = {
-        flex: 1
-    };
-    const innerContainerStyle = {
-        padding: 10
-    }
+  const { children } = props;
+  const containerStyle = {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  };
 
-    return (
-        <SafeAreaView style={containerStyle}>
-            <View style={innerContainerStyle}>
-                {children}
-            </View>
-        </SafeAreaView>
-    );
-}
+  return <SafeAreaView style={containerStyle}>{children}</SafeAreaView>;
+};
 
 export default Screen;

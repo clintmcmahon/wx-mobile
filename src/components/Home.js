@@ -4,15 +4,15 @@ import * as locationService from "../services/LocationService";
 import { useSelector, useDispatch } from "react-redux";
 import { useTheme } from "@react-navigation/native";
 import * as weatherDataService from "../services/WeatherDataService";
-import RecordCard from "./records/RecordCard";
-import RecordChart from "./records/RecordChart";
+import { Link } from "@react-navigation/native";
 
 function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dateName, setDateName] = useState()
+  const [dateName, setDateName] = useState();
   const [records, setRecords] = useState(null);
   const [normals, setNormals] = useState(null);
   const [recordHighsAndLows, setRecordHighsAndLows] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const state = useSelector((state) => state);
   const theme = useTheme();
 
@@ -27,9 +27,10 @@ function Home() {
       const year = selectedDate.getFullYear();
       const shortDate = month + "-" + day;
       const longDate = year + "-" + month + "-" + day;
-      
+
       setDateName(
-        selectedDate.toLocaleString("en-US", { month: "long" }) + " " + day);
+        selectedDate.toLocaleString("en-US", { month: "long" }) + " " + day
+      );
 
       setRecords(
         await weatherDataService.getRecords(
@@ -48,69 +49,140 @@ function Home() {
       );
 
       setRecordHighsAndLows(
-        await weatherDataService.getRecordHighsAndLows(selectedStation.sids[0], shortDate)
+        await weatherDataService.getRecordHighsAndLows(
+          selectedStation.sids[0],
+          shortDate
+        )
       );
     };
 
     if (state.location) {
+      setIsLoading(true);
       getRecords();
+      setIsLoading(false);
     }
   }, [state.location]);
 
+  if (!state.location) {
     return (
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
         <View>
-          <Text style={{ fontSize: 20 }}>
-            {state.location.station}
+          <Text style={{ fontSize: 20, fontWeight: "700" }}>
+            You do not have a weather station selected.
           </Text>
-          <Text style={{fontSize: 18, color:theme.colors.dark, paddingTop: 5}}>{dateName}</Text>
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordCard
-            title="Record High"
-            temp={records ? records.highTemp : null}
-            date={records ? records.highDate : null}
-            hotCold="hot"
-          />
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordCard
-            title="Normal High"
-            temp={normals ? normals.high : null}
-            hotCold="hot"
-          />
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordChart
-            title="Record Highs"
-            data={recordHighsAndLows ? recordHighsAndLows.highs : null}
-            hotCold="hot"
-          />
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordCard
-            title="Record Low"
-            temp={records ? records.lowTemp : null}
-            date={records ? records.lowDate : null}
-            hotCold="cold"
-          />
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordCard
-            title="Normal Low"
-            temp={normals ? normals.low : null}
-            hotCold="cold"
-          />
-        </View>
-        <View style={{ paddingTop: 20 }}>
-          <RecordChart
-            title="Record Lows"
-            data={recordHighsAndLows ? recordHighsAndLows.lows : null}
-            hotCold="cold"
-          />
+          <Text style={{ color: theme.colors.linkBlue, paddingTop: 5 }}>
+            <Link to={{ screen: "Settings" }}>Go to Settings</Link>
+          </Text>
         </View>
       </ScrollView>
     );
+  }
+
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+      <View>
+        <View>
+          <Text style={{ fontSize: 34, fontWeight: "900" }}>
+            {state.location.station.replace("Area", "")}
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              color: theme.colors.dark,
+              paddingTop: 5,
+              paddingBottom: 10,
+            }}
+          >
+            {dateName}
+          </Text>
+          <View
+            style={{
+              borderBottomColor: "#f4f4f4",
+              borderBottomWidth: 1,
+            }}
+          />
+        </View>
+        <View style={{ paddingTop: 20 }}>
+          <View>
+            <View
+              style={{
+                paddingBottom: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "700", fontSize: 24 }}>
+                {isLoading
+                  ? "RECORD HIGH"
+                  : `RECORD HIGH (${
+                      records ? records.highDate.getFullYear() : "----"
+                    })`}
+              </Text>
+              <Text style={{ fontWeight: "900", fontSize: 42 }}>
+                {isLoading ? "----" : records ? `${records.highTemp}℉` : "----"}
+              </Text>
+            </View>
+            <View
+              style={{
+                paddingTop: 10,
+                paddingBottom: 25,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "700", fontSize: 24 }}>
+                NORMAL HIGH
+              </Text>
+              <Text style={{ fontWeight: "900", fontSize: 42 }}>
+                {isLoading ? "----" : normals ? `${normals.high}℉` : "----"}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              borderBottomColor: "#f4f4f4",
+              borderBottomWidth: 1,
+            }}
+          />
+          <View>
+            <View
+              style={{
+                paddingTop: 25,
+                padingBottom: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "700", fontSize: 24 }}>
+                {isLoading
+                  ? "RECORD LOW"
+                  : `RECORD LOW (${
+                      records ? records.lowDate.getFullYear() : "----"
+                    })`}
+              </Text>
+              <Text style={{ fontWeight: "900", fontSize: 42 }}>
+                {isLoading ? "----" : records ? `${records.lowTemp}℉` : "----"}
+              </Text>
+            </View>
+            <View
+              style={{
+                paddingTop: 20,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontWeight: "700", fontSize: 24 }}>
+                NORMAL LOW
+              </Text>
+              <Text style={{ fontWeight: "900", fontSize: 42 }}>
+                {isLoading ? "----" : normals ? `${normals.low}℉` : "----"}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
 
 export default Home;

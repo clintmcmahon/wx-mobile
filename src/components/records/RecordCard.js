@@ -2,37 +2,76 @@ import React from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
-function RecordCard({ temp, date, title, hotCold }) {
+function RecordCard({ leftTemp, leftTitle, rightTitle, rightTemp, hotCold }) {
   const theme = useTheme();
   const getRecord = () => {
-    if (temp !== null) {
+    if (leftTemp !== null) {
       return (
-        <View>
-          <Text style={{ color: hotCold === "hot" ? theme.colors.heat : theme.colors.cold, fontWeight: "bold" }}>
-            {title.toUpperCase()} {date ? `(${date.getFullYear()})` : ``}
-          </Text>
-          <Text style={{ fontWeight: "bold", fontSize: 18, color: theme.colors.dark, marginTop: 5 }}>
-            {temp}℉
-          </Text>
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                color:
+                  hotCold === "hot" ? theme.colors.heat : theme.colors.cold,
+                fontWeight: "bold",
+              }}
+            >
+              {leftTitle.toUpperCase()}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 18,
+                color: theme.colors.dark,
+                marginTop: 5,
+              }}
+            >
+              {leftTemp}℉
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                color:
+                  hotCold === "hot" ? theme.colors.heat : theme.colors.cold,
+                fontWeight: "bold",
+              }}
+            >
+              {rightTitle.toUpperCase()}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 18,
+                color: theme.colors.dark,
+                marginTop: 5,
+              }}
+            >
+              {rightTemp}℉
+            </Text>
+          </View>
         </View>
-      )
+      );
+    } else {
+      return <ActivityIndicator />;
     }
-    else {
-      return (
-        <ActivityIndicator />
-      )
-    }
-  }
+  };
   return (
     <View
       style={{
         backgroundColor: theme.colors.cardBackgroundColor,
-        borderLeftColor: hotCold === "hot" ? theme.colors.heat : theme.colors.cold,
+        borderLeftColor:
+          hotCold === "hot" ? theme.colors.heat : theme.colors.cold,
         borderLeftWidth: 5,
         padding: 20,
-        borderRadius: 5
-      }}>
-
+        borderRadius: 5,
+      }}
+    >
       {getRecord()}
     </View>
   );

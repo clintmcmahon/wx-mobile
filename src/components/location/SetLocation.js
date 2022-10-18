@@ -7,7 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import * as locationService from "../../services/LocationService";
 import { useTheme } from "@react-navigation/native";
 
-function SetLocation({navigation}) {
+function SetLocation({ navigation }) {
   const theme = useTheme();
   const [selectedState, setSelectedState] = useState(null);
   const [selectedStateStations, setSelectedStateStations] = useState([]);
@@ -61,16 +61,19 @@ function SetLocation({navigation}) {
 
   return (
     <ScrollView>
-      <Text style={{ fontSize: 18 }}>Set your location</Text>
+      <Text style={{ fontSize: 34, fontWeight: "900" }}>Set location</Text>
       <View
         style={{
           backgroundColor: theme.colors.cardBackgroundColor,
           padding: 10,
           marginTop: 10,
-          borderRadius: 5
-        }}>
+          borderRadius: 5,
+        }}
+      >
         <View>
-          <Text style={{ fontWeight: "bold"}}>1. Choose State</Text>
+          <Text style={{ fontWeight: "700", fontSize: 17 }}>
+            1. Select State
+          </Text>
         </View>
         <Picker
           selectedValue={selectedState}
@@ -92,10 +95,13 @@ function SetLocation({navigation}) {
           backgroundColor: theme.colors.cardBackgroundColor,
           padding: 10,
           marginTop: 10,
-          borderRadius: 5
-        }}>
+          borderRadius: 5,
+        }}
+      >
         <View>
-          <Text style={{ fontWeight: "bold" }}>2. Select Station</Text>
+          <Text style={{ fontWeight: "700", fontSize: 17 }}>
+            2. Select Station
+          </Text>
         </View>
         {selectedStation && selectedStateStations && (
           <Picker
@@ -122,6 +128,7 @@ function SetLocation({navigation}) {
               backgroundColor: "#000000",
               padding: 10,
               textAlign: "center",
+              fontSize: 17,
             }}
           >
             Save Settings
